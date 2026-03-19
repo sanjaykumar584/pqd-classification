@@ -31,7 +31,7 @@ signals, labels = load_xpqrs('../dataset/XPQRS/')
 ```
 
 - Loads all 17,000 signals from the dataset into memory
-- Loads the trained Random Forest model (happens automatically on first prediction)
+- Loads the trained Gradient Boosting model (happens automatically on first prediction)
 - Creates a time axis (0 to 20 ms) for plotting
 
 **What you see:** `Loaded 17000 signals across 17 classes`
@@ -66,7 +66,7 @@ signals, labels = load_xpqrs('../dataset/XPQRS/')
 - Shows the true label and whether the prediction was correct
 
 **How it works inside:**
-1. Calls `predict_signal(signal)` — this extracts 36 features and runs the Random Forest
+1. Calls `predict_signal(signal)` — this extracts 36 features and runs the Gradient Boosting classifier
 2. Checks if the result is Normal or Abnormal
 3. Picks green or red color based on that
 4. Draws the waveform on the left

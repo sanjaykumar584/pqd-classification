@@ -109,7 +109,7 @@ Each signal is a **numpy array of 100 numbers** representing voltage measurement
 │                         TRAINING (done once)                        │
 │                                                                      │
 │   Raw Signal         Feature             Trained                     │
-│   (100 numbers)  --> Extraction     -->   Random Forest              │
+│   (100 numbers)  --> Extraction     -->   Gradient Boosting        │
 │   x 17,000           (36 features)        Classifier                 │
 │                                           (saved to disk)            │
 └──────────────────────────────────────────────────────────────────────┘
@@ -186,28 +186,30 @@ Each domain catches things the others miss:
 
 Using all three together gives **higher accuracy** than any single domain alone.
 
-### Step 2: Model Training (Random Forest)
+### Step 2: Model Training (Gradient Boosting)
 
-After feature extraction, each signal becomes a row of **36 numbers**. The Random Forest classifier learns to map these 36 numbers to one of the 17 classes.
+After feature extraction, each signal becomes a row of **36 numbers**. The Gradient Boosting classifier learns to map these 36 numbers to one of the 17 classes.
 
-#### What Is Random Forest?
+#### What Is Gradient Boosting?
 
-A Random Forest is an **ensemble of 100 decision trees** that vote together:
+Gradient Boosting is an **ensemble of 100 decision trees** trained sequentially:
 
 ```
 Signal's 36 features
      |
-     ├── Tree 1:  "I think this is Sag"
-     ├── Tree 2:  "I think this is Sag"
-     ├── Tree 3:  "I think this is Flicker_with_Sag"
-     ├── ...
-     └── Tree 100: "I think this is Sag"
-
-     MAJORITY VOTE → "Sag" (confidence: 98/100 = 0.98)
+     Tree 1: Accuracy 70% (makes 30% errors)
+     |  ↓ Focus on those 30% errors
+     Tree 2: Improved accuracy to 80% (20% errors remaining)
+     |  ↓ Focus on those 20% errors
+     Tree 3: Improved accuracy to 87% (13% errors remaining)
+     |  ↓ Focus on those 13% errors
+     ...
+     Tree 100: Final ensemble accuracy 91.12%
+     |
+     Final prediction = weighted sum of all 100 trees
 ```
 
-Each tree is slightly different because it:
-- Trains on a random subset of the data
+Key difference from Random Forest: **trees are trained sequentially**, with each new tree focusing on the mistakes made by previous trees.
 - Considers a random subset of features at each decision point
 
 This randomness prevents **overfitting** (memorizing the training data instead of learning patterns) and makes the predictions more robust.
@@ -358,7 +360,7 @@ final-year-project/
 │   ├── 01_data_loading_exploration   # Load and explore datasets
 │   ├── 02_signal_visualization       # Visualize waveforms
 │   ├── 03_feature_extraction         # Extract 36 features
-│   ├── 04_model_training_evaluation  # Train Random Forest, evaluate
+│   ├── 04_model_training_evaluation  # Train Gradient Boosting, evaluate
 │   └── 05_results_comparison         # Detailed analysis and plots
 │
 ├── dataset/XPQRS/                    # 17 CSV files, 17000 signals
@@ -378,7 +380,7 @@ final-year-project/
 | **Python 3** | Programming language |
 | **NumPy** | Numerical computation and array handling |
 | **Pandas** | Data loading and manipulation |
-| **Scikit-learn** | Machine learning (Random Forest, StandardScaler, evaluation metrics) |
+| **Scikit-learn** | Machine learning (Gradient Boosting, StandardScaler, evaluation metrics) |
 | **SciPy** | Statistical functions (skewness, kurtosis) |
 | **PyWavelets** | Discrete Wavelet Transform for wavelet features |
 | **Matplotlib + Seaborn** | Plots and visualizations |
@@ -394,8 +396,8 @@ final-year-project/
 | **Problem** | Automatically detect and classify power quality disturbances |
 | **Input** | Raw electrical signal (100 voltage samples, one 50 Hz cycle) |
 | **Feature Extraction** | 36 features from 3 domains (time, frequency, wavelet) |
-| **Classifier** | Random Forest (100 decision trees) |
+| **Classifier** | Gradient Boosting (100 sequential decision trees) |
 | **Output** | Normal/Abnormal + disturbance type + confidence score |
-| **Accuracy** | 90.62% across 17 disturbance types |
+| **Accuracy** | 91.12% across 17 disturbance types |
 | **Dataset** | XPQRS — 17,000 signals, 17 classes, balanced |
 | **Key Advantage** | Multi-domain feature extraction captures disturbances that single-domain approaches miss |

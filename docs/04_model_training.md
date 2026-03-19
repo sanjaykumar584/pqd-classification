@@ -2,7 +2,7 @@
 
 ## Overview
 
-The model is a **Random Forest classifier** wrapped in a **scikit-learn Pipeline** with a StandardScaler. Training happens in Notebook 04 and takes about 30 seconds.
+The model is a **Gradient Boosting classifier** wrapped in a **scikit-learn Pipeline** with a StandardScaler. Training happens in Notebook 04 and takes about 30 seconds.
 
 ## Step-by-Step Training Process
 
@@ -55,8 +55,8 @@ The split is **stratified** — each class has the same proportion in train and 
 
 ```python
 Pipeline([
-    ('scaler', StandardScaler()),      # Step A: Normalize features
-    ('clf', RandomForestClassifier())   # Step B: Classify
+    ('scaler', StandardScaler()),          # Step A: Normalize features
+    ('clf', GradientBoostingClassifier())   # Step B: Classify
 ])
 ```
 
@@ -68,32 +68,38 @@ scaled_value = (original_value - mean) / std
 
 This ensures no single feature dominates just because it has larger numbers.
 
-**Step B - Random Forest:** An ensemble of **100 decision trees** that vote together.
+**Step B - Gradient Boosting:** An ensemble of **100 decision trees** that are trained sequentially, with each new tree correcting mistakes made by previous trees.
 
-### Step 5: How Random Forest Works
+### Step 5: How Gradient Boosting Works
 
-A Random Forest builds many decision trees, each slightly different, and combines their predictions:
+Gradient Boosting builds trees sequentially, where each new tree learns from the errors of all previous trees:
 
 ```
                     Signal Features
-                   /      |       \
-                Tree 1  Tree 2 ... Tree 100
-                  |       |          |
-                "Sag"   "Sag"    "Flicker"
-                  \       |        /
-                   \      |       /
-                    MAJORITY VOTE
-                        |
-                      "Sag" (2 out of 3 trees agree)
+                          │
+                   Tree 1 (Weak learner)
+                   |  Accuracy: 70%
+                   |  Errors: 30% of samples
+                         │
+                   Tree 2 (Focus on those 30%)
+                   |  Accuracy improved: 80%
+                   |  Remaining errors: 20%
+                         │
+                   Tree 3 (Focus on those 20%)
+                   |  Accuracy improved: 87%
+                         │
+                   ...
+                   Tree 100 (Final ensemble)
+                        │
+                      Final Prediction (weighted sum)
 ```
 
-**Why 100 trees?** More trees = more stable predictions, less overfitting. 100 is a good balance of accuracy and speed.
+**Why sequential training?** Each tree focuses on correcting the mistakes of previous trees, gradually improving the ensemble's accuracy. The final prediction is a weighted sum of all 100 trees.
 
-**How each tree is built:**
-1. Take a random subset of training samples (with replacement — "bagging")
-2. At each decision node, pick a random subset of features to consider
-3. Find the best feature and threshold to split the data
-4. Repeat until leaves are pure (or max depth reached)
+**Key hyperparameters:**
+- **n_estimators:** 100 trees (more trees = more boosting rounds)
+- **learning_rate:** Controls how much each tree contributes (lower = slower training but often better accuracy)
+- **max_depth:** Limits tree depth to prevent overfitting
 
 **Example of one tree's decision path:**
 
@@ -139,12 +145,12 @@ After cross-validation confirms stability:
 ### Step 8: Save the Model
 
 ```python
-joblib.dump(pipe, 'results/models/xpqrs_random_forest.pkl')
+joblib.dump(pipe, 'results/models/xpqrs_gradient_boosting.pkl')
 ```
 
 The saved `.pkl` file contains:
 - The fitted **StandardScaler** (with stored means and standard deviations for all 36 features)
-- The trained **RandomForestClassifier** (all 100 decision trees with their rules)
+- The trained **GradientBoostingClassifier** (all 100 sequentially-trained decision trees with their rules and weights)
 
 This file is 44 MB because it stores 100 complete decision trees.
 

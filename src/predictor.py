@@ -1,7 +1,7 @@
 """
 Prediction module for Power Quality Disturbance Classification.
 
-Loads a trained Random Forest model and predicts disturbance type
+Loads a trained Gradient Boosting model and predicts disturbance type
 from raw waveform signals.
 
 Usage:
@@ -101,7 +101,7 @@ DISTURBANCE_GUIDANCE = {
 
 # Default model path (relative to this file's directory)
 _DEFAULT_MODEL_PATH = os.path.join(
-    os.path.dirname(__file__), '..', 'results', 'models', 'xpqrs_random_forest.pkl'
+    os.path.dirname(__file__), '..', 'results', 'models', 'xpqrs_gradient_boosting.pkl'
 )
 
 # Module-level cache so the model is loaded only once
@@ -114,12 +114,12 @@ def load_model(model_path=None):
     Parameters
     ----------
     model_path : str or None
-        Path to the .pkl file. Defaults to results/models/xpqrs_random_forest.pkl.
+        Path to the .pkl file. Defaults to results/models/xpqrs_gradient_boosting.pkl.
 
     Returns
     -------
     pipeline : sklearn.pipeline.Pipeline
-        Fitted pipeline (StandardScaler + RandomForestClassifier).
+        Fitted pipeline (StandardScaler + GradientBoostingClassifier).
     """
     global _pipeline
     path = model_path or _DEFAULT_MODEL_PATH

@@ -1,6 +1,6 @@
 # Power Quality Disturbance (PQD) Classification
 
-A machine learning pipeline for automated detection and classification of power quality disturbances from raw waveform signals. The system extracts multi-domain features (time, frequency, wavelet) and trains several classifiers — with **Random Forest** as the primary deployed model — achieving **~90.6% accuracy** across 17 disturbance classes.
+A machine learning pipeline for automated detection and classification of power quality disturbances from raw waveform signals. The system extracts multi-domain features (time, frequency, wavelet) and trains several classifiers — with **Gradient Boosting** as the primary deployed model — achieving **~91.1% accuracy** across 17 disturbance classes.
 
 ---
 
@@ -35,7 +35,7 @@ Raw waveform signal (100 samples, one 20 ms cycle at 5 kHz)
   Feature extraction (36 features across 3 domains)
         │
         ▼
-  Random Forest classifier (trained on 17,000 labeled signals)
+  Gradient Boosting classifier (trained on 17,000 labeled signals)
         │
         ▼
   Predicted class + Normal/Abnormal status + confidence score
@@ -88,8 +88,8 @@ pqd-classification/
 │
 ├── results/
 │   ├── models/                       # Trained .pkl pipelines
-│   │   ├── xpqrs_random_forest.pkl   # Deployed model
-│   │   ├── xpqrs_gradient_boosting.pkl
+│   │   ├── xpqrs_gradient_boosting.pkl  # Deployed model
+│   │   ├── xpqrs_random_forest.pkl
 │   │   └── ...
 │   ├── figures/                      # Generated plots (PNG)
 │   └── tables/                       # CSV result tables
@@ -207,7 +207,7 @@ All models trained on the XPQRS dataset (17,000 signals), evaluated on a held-ou
 | SVM | 81.90 ± 0.46% | 83.35% | 0.8298 |
 | KNN | 79.21 ± 0.77% | 80.06% | 0.7955 |
 
-Random Forest is deployed as the primary model due to its strong balance of accuracy, inference speed, and interpretability (feature importance).
+Gradient Boosting is deployed as the primary model because it achieves the highest test accuracy (91.12%) and F1-score (0.9107) on the XPQRS dataset.
 
 ---
 
@@ -397,8 +397,8 @@ Located in `dataset/PQ Disturbances Dataset/`. Contains pre-extracted wavelet fe
 
 | File | Description |
 |------|-------------|
-| `xpqrs_random_forest.pkl` | **Deployed model** — StandardScaler + Random Forest |
-| `xpqrs_gradient_boosting.pkl` | Best accuracy model |
+| `xpqrs_gradient_boosting.pkl` | **Deployed model** — StandardScaler + Gradient Boosting |
+| `xpqrs_random_forest.pkl` | Random Forest model (for comparison) |
 | `xpqrs_decision_tree.pkl` | Interpretable baseline |
 | `xpqrs_logistic_regression.pkl` | Linear baseline |
 | `xpqrs_svm.pkl` | SVM baseline |
