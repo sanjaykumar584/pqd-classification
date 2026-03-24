@@ -1,0 +1,64 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="EEE_PQD_Block" name="Edge AI PQD Classification System">
+    <mxGraphModel dx="1250" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" background="#ffffff">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Sources -->
+        <mxCell id="2" value="Grid" style="shape=ellipse;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="80" y="140" width="80" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="3" value="Solar" style="shape=ellipse;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="80" y="200" width="80" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="4" value="DG" style="shape=ellipse;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="80" y="260" width="80" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Sensors -->
+        <mxCell id="5" value="ACS712 (Current Sensor)" style="shape=rectangle;whiteSpace=wrap;html=1;rounded=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="260" y="170" width="160" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="6" value="ZMPT101B (Voltage Sensor)" style="shape=rectangle;whiteSpace=wrap;html=1;rounded=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="260" y="230" width="160" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ADC/Data Conditioning -->
+        <mxCell id="7" value="Signal Conditioning &amp; ADC" style="shape=process;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="460" y="200" width="160" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Edge Device -->
+        <mxCell id="8" value="Raspberry Pi 4 (Edge Processing)" style="shape=rectangle;whiteSpace=wrap;html=1;rounded=1;fillColor=#CFE2F3;strokeColor=#6FA8DC;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="660" y="200" width="200" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- AI Model -->
+        <mxCell id="9" value="CNN–LSTM Hybrid Model" style="shape=rectangle;whiteSpace=wrap;html=1;rounded=1;fillColor=#D9EAD3;strokeColor=#6AA84F;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="900" y="200" width="180" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Monitoring -->
+        <mxCell id="10" value="Panel Meter" style="shape=rectangle;whiteSpace=wrap;html=1;rounded=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="170" width="120" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="11" value="Dashboard (Node-RED)" style="shape=rectangle;whiteSpace=wrap;html=1;rounded=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="230" width="160" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrows -->
+        <mxCell id="12" edge="1" parent="1" source="2" target="5" style="endArrow=classic;strokeWidth=2;strokeColor=#000000;"/>
+        <mxCell id="13" edge="1" parent="1" source="3" target="5" style="endArrow=classic;strokeWidth=2;strokeColor=#000000;"/>
+        <mxCell id="14" edge="1" parent="1" source="4" target="5" style="endArrow=classic;strokeWidth=2;strokeColor=#000000;"/>
+        <mxCell id="15" edge="1" parent="1" source="5" target="7" style="endArrow=classic;strokeWidth=2;strokeColor=#000000;"/>
+        <mxCell id="16" edge="1" parent="1" source="6" target="7" style="endArrow=classic;strokeWidth=2;strokeColor=#000000;"/>
+        <mxCell id="17" edge="1" parent="1" source="7" target="8" style="endArrow=classic;strokeWidth=2;strokeColor=#000000;"/>
+        <mxCell id="18" edge="1" parent="1" source="8" target="9" style="endArrow=classic;strokeWidth=2;strokeColor=#000000;"/>
+        <mxCell id="19" edge="1" parent="1" source="9" target="10" style="endArrow=classic;strokeWidth=2;strokeColor=#000000;"/>
+        <mxCell id="20" edge="1" parent="1" source="9" target="11" style="endArrow=classic;strokeWidth=2;strokeColor=#000000;"/>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+
